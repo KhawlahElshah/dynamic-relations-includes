@@ -1,5 +1,5 @@
 {
-    "name": "kalshah/dynamic-relations-loading",
+    "name": "kalshah/dynamic-relations-includes",
     "description": "Dynamically include resources relations for API Requests",
     "type": "library",
     "keywords": [
