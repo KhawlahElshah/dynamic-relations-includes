@@ -2,7 +2,6 @@
 
 namespace Kalshah\DynamicRelationsInclude\Tests;
 
-use Illuminate\Support\Facades\App;
 use Kalshah\DynamicRelationsInclude\Tests\classes\TestModel;
 use Kalshah\DynamicRelationsInclude\DynamicRelationsIncludeRequest;
 use Kalshah\DynamicRelationsInclude\Exceptions\LoadablesAreNotDefinedException;
@@ -15,9 +14,11 @@ class IncludeRelationsTest extends TestCase
     function it_knows_it_relation_exsits_on_the_model()
     {
         $model = new TestModel;
+        $model->setLoadableRelations(['relatedModel']);
 
-        $this->assertTrue($model->checkExactRelationExists('relatedModel'));
-        $this->assertFalse($model->checkExactRelationExists('anotherRelatedModel'));
+        $this->assertTrue($model->loadIfLoadableRelation('relatedModel'));
+        $this->assertFalse($model->loadIfLoadableRelation('anotherRelatedModel'));
+        $this->assertEquals(['relatedModel'], $model->getWithArray());
     }
 
     /**
@@ -26,23 +27,26 @@ class IncludeRelationsTest extends TestCase
     function it_converts_relation_to_camel_case_and_check_if_it_exsits()
     {
         $model = new TestModel;
+        $model->setLoadableRelations(['related_model']);
 
-        $this->assertTrue($model->checkCamelCaseRelationExists('related_model'));
-        $this->assertFalse($model->checkCamelCaseRelationExists('another_related_model'));
+        $this->assertTrue($model->loadIfLoadableRelation('related_model'));
+        $this->assertFalse($model->loadIfLoadableRelation('another_related_model'));
+        $this->assertEquals(['related_model'], $model->getWithArray());
     }
 
     /**
      *@test
      @TODO:: enable this
      */
-    // public function it_checks_for_sub_relations()
-    // {
-    //     $model = new TestModel;
-    //     $model->setLoadableRelations(['relatedModel.subRelatedModel']);
+    public function it_checks_for_sub_relations()
+    {
+        $model = new TestModel;
+        $model->setLoadableRelations(['relatedModel.subRelatedModel']);
 
-    //     $this->assertTrue($model->checkSubRelationExists('relatedModel.subRelatedModel'));
-    //     $this->assertFalse($model->checkSubRelationExists('relatedModel.anotherSubRelatedModel'));
-    // }
+        $this->assertTrue($model->loadIfLoadableRelation('relatedModel.subRelatedModel'));
+        $this->assertFalse($model->loadIfLoadableRelation('relatedModel.anotherSubRelatedModel'));
+        $this->assertEquals(['relatedModel.subRelatedModel'], $model->getWithArray());
+    }
 
     /**
      *@test

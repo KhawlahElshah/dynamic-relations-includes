@@ -12,43 +12,17 @@ trait IncludeRelations
         parent::__construct($attributes);
 
         if (DynamicRelationsIncludeRequest::requestHasIncludeParameter()) {
+
             $this->checkLoadableRelationsArrayIsDefined();
 
-            $includedRelations = DynamicRelationsIncludeRequest::getRequestIncludeParameter();
-
-            array_map(function ($relation) {
-                if ($this->checkExactRelationExists($relation)) {
-                    $this->loadIfLoadableRelation($relation);
-                }
-
-                if ($this->checkCamelCaseRelationExists($relation)) {
-                    $this->loadIfLoadableRelation(Str::camel($relation));
-                }
-
-                if ($this->checkSubRelationExists($relation)) {
-                    $this->loadIfLoadableRelation($relation);
-                }
-            }, $includedRelations);
+            $this->loadIncludedRelations();
         }
 
         if (DynamicRelationsIncludeRequest::requestHasIncludeCountParameter()) {
+
             $this->checkLoadableRelationsCountArrayIsDefined();
 
-            $includedRelationsCount = DynamicRelationsIncludeRequest::getRequestIncludeCountParameter();
-
-            array_map(function ($relation) {
-                if ($this->checkExactRelationExists($relation)) {
-                    $this->loadIfLoadableRelationCount($relation);
-                }
-
-                if ($this->checkCamelCaseRelationExists($relation)) {
-                    $this->loadIfLoadableRelationCount(Str::camel($relation));
-                }
-
-                if ($this->checkSubRelationExists($relation)) {
-                    $this->loadIfLoadableRelationCount($relation);
-                }
-            }, $includedRelationsCount);
+            $this->loadIncludedRelationsCount();
         }
     }
 
@@ -66,40 +40,52 @@ trait IncludeRelations
         }
     }
 
+    public function loadIncludedRelations()
+    {
+        $includedRelations = DynamicRelationsIncludeRequest::getRequestIncludeParameter();
+
+        array_map(function ($relation) {
+            if ($this->loadIfLoadableRelation($relation)) {
+                return;
+            }
+
+            if ($this->loadIfLoadableRelation(Str::camel($relation))) {
+                return;
+            }
+        }, $includedRelations);
+    }
+
+    public function loadIncludedRelationsCount()
+    {
+        $includedRelationsCount = DynamicRelationsIncludeRequest::getRequestIncludeCountParameter();
+
+        array_map(function ($relation) {
+            if ($this->loadIfLoadableRelationCount($relation)) {
+                return;
+            }
+
+            if ($this->loadIfLoadableRelationCount(Str::camel($relation))) {
+                return;
+            }
+        }, $includedRelationsCount);
+    }
+
     public function loadIfLoadableRelation($relation)
     {
         if (in_array($relation, $this->loadableRelations)) {
             $this->with[] = $relation;
+            return true;
         }
+
+        return false;
     }
 
     public function loadIfLoadableRelationCount($relationCount)
     {
         if (in_array($relationCount, $this->loadableRelationsCount)) {
             $this->withCount[] = $relationCount;
+            return true;
         }
-    }
-
-    public function checkExactRelationExists($relation)
-    {
-        return !!method_exists($this, $relation);
-    }
-
-    public function checkCamelCaseRelationExists($relation)
-    {
-        return !!method_exists($this, Str::camel($relation));
-    }
-
-    public function checkSubRelationExists($relation)
-    {
-        $relations = explode('.', $relation);
-
-        if (is_array($relations) && count($relations) > 1) {
-            if (method_exists($this, $relations[0])) {
-                $modelName = ucfirst(Str::singular($relations[0]));
-
-                return !!method_exists("App\\{$modelName}", $relations[1]);
-            }
-        }
+        return false;
     }
 }
