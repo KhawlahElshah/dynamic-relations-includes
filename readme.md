@@ -70,7 +70,38 @@ class Post extends Model
 
 and now you can send your requests where you need the comments count, by adding the `include_count` array parameter like so `www.example.com/posts?include_count[]=comments`
 
+### Using different relationships types and conventions
+- you can include nested relationships, for example loading the comments and each comment       creator
+  ```php
+  protected $loadableRelations = ['comments', 'comments.creator'];
+  ```
+    and requesting it using `www.example.com/posts?include[]=comments.creator`
 
+&nbsp;
+
+- you can include and use camel cased relationships by adding it to the array like with its exact name
+
+    ```php
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+    use Kalshah\DynamicRelationsInclude\IncludeRelations;
+
+    class Profile extends Model
+    {
+        use IncludeRelations;
+
+        protected $loadableRelationsCount = ['socialMediaAccounts'];
+
+        public function socialMediaAccounts()
+        {
+            return $this->hasMany(socialMediaAccount::class);
+        }
+    }
+    ```
+    and then including it using either `www.example.com/profiles?include[]=social_media_accounts` or `www.example.com/profiles?include[]=socialMediaAccounts`
+    
+     
 ### Futher Explanations
 
 - Both `loadableRelations` and `loadableRelationsCount` arrays must be set on models which you want to to load their relations.
