@@ -77,7 +77,7 @@ You can use both `include` and `include_count` parameters as string or as an arr
 - using it as a string with multiply includes `www.example.com/posts?include=comments,tags`
 
 - using it as an array with multiply includes `www.example.com/posts?include[]=comments&include[]=tags`
-- 
+  
 ### Using different relationships types and conventions
 - you can include nested relationships, for example loading the comments and each comment       creator
   ```php
