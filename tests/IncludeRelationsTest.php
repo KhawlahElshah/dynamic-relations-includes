@@ -3,7 +3,6 @@
 namespace Kalshah\DynamicRelationsInclude\Tests;
 
 use Kalshah\DynamicRelationsInclude\Tests\classes\TestModel;
-use Kalshah\DynamicRelationsInclude\DynamicRelationsIncludeRequest;
 use Kalshah\DynamicRelationsInclude\Exceptions\LoadablesAreNotDefinedException;
 
 class IncludeRelationsTest extends TestCase
@@ -76,18 +75,12 @@ class IncludeRelationsTest extends TestCase
 
     /**
      *@test
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
      */
     public function it_throws_an_exception_if_attempting_to_include_relations_without_setting_the_loadables_relations_array()
     {
-        $mock = $this->mock("alias:" . DynamicRelationsIncludeRequest::class);
-
-        $mock->shouldReceive('requestHasIncludeParameter')
-            ->once()
-            ->andReturn(true);
-
-        $this->app->instance(DynamicRelationsIncludeRequest::class, $mock);
+        $this->call('get', '/example', [
+            'include' => ['related_model']
+        ]);
 
         $this->expectException(LoadablesAreNotDefinedException::class);
 

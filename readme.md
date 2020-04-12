@@ -41,7 +41,7 @@ class Post extends Model
 }
 ```
 
-and now you can send your requests where you need the comments, by adding the `include` array parameter like so `www.example.com/posts?include[]=comments`
+and now you can send your requests where you need the comments, by adding the `include` array parameter like so `www.example.com/posts?include=comments`
 
 ### Include relations count based on request
 
@@ -68,14 +68,22 @@ class Post extends Model
 }
 ```
 
-and now you can send your requests where you need the comments count, by adding the `include_count` array parameter like so `www.example.com/posts?include_count[]=comments`
+and now you can send your requests where you need the comments count, by adding the `include_count` array parameter like so `www.example.com/posts?include_count=comments`
 
+&nbsp;
+
+You can use both `include` and `include_count` parameters as string or as an array
+
+- using it as a string with multiply includes `www.example.com/posts?include=comments,tags`
+
+- using it as an array with multiply includes `www.example.com/posts?include[]=comments&include[]=tags`
+- 
 ### Using different relationships types and conventions
 - you can include nested relationships, for example loading the comments and each comment       creator
   ```php
   protected $loadableRelations = ['comments', 'comments.creator'];
   ```
-    and requesting it using `www.example.com/posts?include[]=comments.creator`
+    and requesting it using `www.example.com/posts?include=comments.creator`
 
 &nbsp;
 
@@ -99,7 +107,7 @@ and now you can send your requests where you need the comments count, by adding 
         }
     }
     ```
-    and then including it using either `www.example.com/profiles?include[]=social_media_accounts` or `www.example.com/profiles?include[]=socialMediaAccounts`
+    and then including it using either `www.example.com/profiles?include=social_media_accounts` or `www.example.com/profiles?include=socialMediaAccounts`
     
      
 ### Futher Explanations

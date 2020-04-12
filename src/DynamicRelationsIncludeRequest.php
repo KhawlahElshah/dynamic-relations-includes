@@ -18,11 +18,25 @@ class DynamicRelationsIncludeRequest extends Request
 
     public static function getRequestIncludeParameter()
     {
-        return request('include');
+        $relations = request('include');
+
+        if (is_string($relations)) {
+            $includedRelations = explode(",", $relations);
+            return $includedRelations;
+        }
+
+        return $relations;
     }
 
     public static function getRequestIncludeCountParameter()
     {
-        return request('include_count');
+        $relations = request('include_count');
+
+        if (is_string($relations)) {
+            $includedRelations = explode(",", $relations);
+            return $includedRelations;
+        }
+
+        return $relations;
     }
 }
