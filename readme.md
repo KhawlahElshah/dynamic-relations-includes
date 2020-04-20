@@ -13,6 +13,8 @@ This Package can be installed vie Composer
 composer require kalshah/dynamic-relations-includes
 ```
 
+For **Lumen** is same procedure but you need to add helper **request()**. Here is code: https://github.com/albertcht/lumen-helpers/blob/master/src/helpers.php#L417.
+
 
 ## Usage
 
