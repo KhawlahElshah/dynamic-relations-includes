@@ -44,30 +44,34 @@ trait IncludeRelations
     {
         $includedRelations = DynamicRelationsIncludeRequest::getRequestIncludeParameter();
 
-        array_map(function ($relation) {
-            if ($this->loadIfLoadableRelation($relation)) {
-                return;
-            }
+        if (is_array($includedRelations)) {
+            array_map(function ($relation) {
+                if ($this->loadIfLoadableRelation($relation)) {
+                    return;
+                }
 
-            if ($this->loadIfLoadableRelation(Str::camel($relation))) {
-                return;
-            }
-        }, $includedRelations);
+                if ($this->loadIfLoadableRelation(Str::camel($relation))) {
+                    return;
+                }
+            }, $includedRelations);
+        }
     }
 
     public function loadIncludedRelationsCount()
     {
         $includedRelationsCount = DynamicRelationsIncludeRequest::getRequestIncludeCountParameter();
 
-        array_map(function ($relation) {
-            if ($this->loadIfLoadableRelationCount($relation)) {
-                return;
-            }
+        if (is_array($includedRelationsCount)) {
+            array_map(function ($relation) {
+                if ($this->loadIfLoadableRelationCount($relation)) {
+                    return;
+                }
 
-            if ($this->loadIfLoadableRelationCount(Str::camel($relation))) {
-                return;
-            }
-        }, $includedRelationsCount);
+                if ($this->loadIfLoadableRelationCount(Str::camel($relation))) {
+                    return;
+                }
+            }, $includedRelationsCount);
+        }
     }
 
     public function loadIfLoadableRelation($relation)
