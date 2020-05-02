@@ -110,8 +110,15 @@ You can use both `include` and `include_count` parameters as string or as an arr
     }
     ```
     and then including it using either `www.example.com/profiles?include=social_media_accounts` or `www.example.com/profiles?include=socialMediaAccounts`
-    
-     
+
+
+### Load all relationships
+- If you want to load all relationships you can pass "**all**" to **include**:
+  ```php
+  ?include=all
+  ```
+
+
 ### Futher Explanations
 
 - Both `loadableRelations` and `loadableRelationsCount` arrays must be set on models which you want to to load their relations.
