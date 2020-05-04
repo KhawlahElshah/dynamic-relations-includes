@@ -45,7 +45,17 @@ trait IncludeRelations
         $includedRelations = DynamicRelationsIncludeRequest::getRequestIncludeParameter();
 
         if (is_array($includedRelations) && count($includedRelations) == 1 && $includedRelations[0] == 'all') {
-            $this->loadAllRelations();
+            $includedRelations = $this->loadableRelations;
+
+            if (is_array($includedRelations)) {
+                foreach ($includedRelations as $relation) {
+                    if (!$this->loadIfLoadableRelation($relation)) {
+                        $this->loadIfLoadableRelation(Str::camel($relation));
+                    }
+                    $includedRelations = $this->loadableRelations;
+                }
+            }
+
             return;
         }
 
@@ -77,17 +87,6 @@ trait IncludeRelations
                 }
             }, $includedRelationsCount);
         }
-    }
-
-    public function loadAllRelations()
-    {
-        if (is_array($this->loadableRelations)) {
-            foreach ($this->loadableRelations as $relation) {
-                $this->with[] = $relation;
-            }
-        }
-
-        return true;
     }
 
     public function loadIfLoadableRelation($relation)
