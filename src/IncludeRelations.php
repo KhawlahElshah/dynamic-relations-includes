@@ -44,7 +44,7 @@ trait IncludeRelations
     {
         $includedRelations = DynamicRelationsIncludeRequest::getRequestIncludeParameter();
 
-        if (is_array($includedRelations) && count($includedRelations) == 1 && array_key_first($includedRelations) == 'all') {
+        if (is_array($includedRelations) && count($includedRelations) == 1 && $includedRelations[0] == 'all') {
             $this->loadAllRelations();
             return;
         }
