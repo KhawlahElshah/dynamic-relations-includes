@@ -3,7 +3,6 @@
 namespace Kalshah\DynamicRelationsInclude;
 
 use Illuminate\Support\Str;
-use Kalshah\DynamicRelationsInclude\Exceptions\LoadablesAreNotDefinedException;
 
 trait IncludeRelations
 {
