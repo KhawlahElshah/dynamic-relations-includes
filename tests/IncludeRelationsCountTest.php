@@ -32,27 +32,4 @@ class IncludeRelationsCountTest extends TestCase
 
         $this->assertEquals([], $model->getWithArray());
     }
-
-    /**
-     *@test
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
-    public function it_throws_an_exception_if_attempting_to_include_relations_count_without_setting_the_loadables_relations_array()
-    {
-        $mock = $this->mock("alias:" . DynamicRelationsIncludeRequest::class);
-
-        $mock->shouldReceive('requestHasIncludeCountParameter')
-            ->once()
-            ->andReturn(true)
-            ->shouldReceive('requestHasIncludeParameter')
-            ->once()
-            ->andReturn(false);
-
-        $this->app->instance(DynamicRelationsIncludeRequest::class, $mock);
-
-        // $this->expectException(LoadablesAreNotDefinedException::class);
-
-        $model = new TestModel();
-    }
 }

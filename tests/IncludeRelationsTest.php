@@ -71,18 +71,4 @@ class IncludeRelationsTest extends TestCase
 
         $this->assertEquals([], $model->getWithArray());
     }
-
-    /**
-     *@test
-     */
-    public function it_throws_an_exception_if_attempting_to_include_relations_without_setting_the_loadables_relations_array()
-    {
-        $this->call('get', '/example', [
-            'include' => ['related_model']
-        ]);
-
-        // $this->expectException(LoadablesAreNotDefinedException::class);
-
-        $model = new TestModel();
-    }
 }
