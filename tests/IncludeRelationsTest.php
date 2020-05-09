@@ -3,7 +3,6 @@
 namespace Kalshah\DynamicRelationsInclude\Tests;
 
 use Kalshah\DynamicRelationsInclude\Tests\classes\TestModel;
-use Kalshah\DynamicRelationsInclude\Exceptions\LoadablesAreNotDefinedException;
 
 class IncludeRelationsTest extends TestCase
 {
@@ -71,19 +70,5 @@ class IncludeRelationsTest extends TestCase
         $model->loadIfLoadableRelation('anotheRelatedModel');
 
         $this->assertEquals([], $model->getWithArray());
-    }
-
-    /**
-     *@test
-     */
-    public function it_throws_an_exception_if_attempting_to_include_relations_without_setting_the_loadables_relations_array()
-    {
-        $this->call('get', '/example', [
-            'include' => ['related_model']
-        ]);
-
-        $this->expectException(LoadablesAreNotDefinedException::class);
-
-        $model = new TestModel();
     }
 }

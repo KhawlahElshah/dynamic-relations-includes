@@ -3,7 +3,6 @@
 namespace Kalshah\DynamicRelationsInclude;
 
 use Illuminate\Support\Str;
-use Kalshah\DynamicRelationsInclude\Exceptions\LoadablesAreNotDefinedException;
 
 trait IncludeRelations
 {
@@ -29,14 +28,14 @@ trait IncludeRelations
     public function checkLoadableRelationsArrayIsDefined()
     {
         if (!$this->loadableRelations) {
-            throw new LoadablesAreNotDefinedException;
+            $this->loadableRelations = [];
         }
     }
 
     public function checkLoadableRelationsCountArrayIsDefined()
     {
         if (!$this->loadableRelationsCount) {
-            throw new LoadablesAreNotDefinedException;
+            $this->loadableRelationsCount = [];
         }
     }
 
