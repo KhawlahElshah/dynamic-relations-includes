@@ -6,10 +6,8 @@ use Illuminate\Support\Str;
 
 trait IncludeRelations
 {
-    public function __construct(array $attributes = [])
+    public function initializeIncludeRelations()
     {
-        parent::__construct($attributes);
-
         if (DynamicRelationsIncludeRequest::requestHasIncludeParameter()) {
 
             $this->checkLoadableRelationsArrayIsDefined();
