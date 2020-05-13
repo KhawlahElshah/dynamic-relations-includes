@@ -52,7 +52,6 @@ trait IncludeRelations
                     if (!$this->loadIfLoadableRelation($relation)) {
                         $this->loadIfLoadableRelation(Str::camel($relation));
                     }
-                    $includedRelations = $this->loadableRelations;
                 }
             }
 
